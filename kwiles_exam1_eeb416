@@ -1,0 +1,172 @@
+
+Kat Wiles
+Exam 1, Introduction to Bioinformatics
+
+
+Answer each of the below questions in a .txt file, along with the requested files, unless indicated otherwise. This exam is open note/open book and can be collaborative. You are welcome to look in other sources for your answer (unix help forums, etc). Each person will submit his or her own work into a Git repository (see task #13).
+
+(Questions 1-5 are worth 2pts each for a total of 10 pts)
+
+1. Should ‘ecological modeling of populations of organisms’ be considered a bioinformatics research area or not? Briefly explain your answer. 
+	Bioinformatics would be more useful in studying evolutionary ecological questions rather than population modeling. Bioinformatics is more focused on a molecular level looking at metobolic pathways, gene expressions, phylogeny, protein interactions, etc. Even if you are studying microbial populations, I do not think bioinformatics is the right tool to come up with complex ecological models. Ecological modeling on a population level could find a better home in computational biology than bioinformatics. 
+
+2. True/False. All molecular sequence data available at NCBI are peer-reviewed and therefore are more reliable than sequences obtained from other data bank services.
+	FALSE
+	Just because data may be peer-reviewed does not mean that it is more reliable. The golden rule of bioinformatics is to never trust your data or your tools. While the quality is often high on NCBI, there still may be errors. Depending on the organism(s) in question and molecule of interest, it may be better to use a different database. 
+
+3. A database search returns a match with an E-value of 3.4 e-178. How do you interpret this result?
+	This evidence suggests high confidence that your two sequences match (can be interpreted similar to a p-value). 
+
+4. What are two ways that we increase the copy number of our target DNA before sequencing it?
+	Copy number can be increased by PCR amplification or cloning. 
+
+5. How many genomes do eukaryotes generally have per cell? Prokaryotes?
+	Eukaryotes typically have 2-3 genomes/cell while Bacteria and Archaea typically have 1 genome/cell.
+
+6. (15 pts) You are interested in floral color evolution in the spurge family of plants. You want to find really close homologs as well as homologs from distantly related organisms. You elect to do this in two different ways, first, you decide to (3 points each below):
+**See Github, question6_files folder for the associated files for this question. 
+	1.Find a protein sequence of an R2R3-MYB transcription factor from Jatropha curcas --what is its accession number?
+			http://www.ncbi.nlm.nih.gov/protein/AFV73403.1
+			Accession number: AFV73403.1
+		
+	2. What type of blast is the most appropriate?
+			Blastp would be the most appropriate because this sequence is a protein.
+		
+	3. When you do the blast to the nr database at NCBI, how many hits do you return?
+			100
+		
+	4. Using the taxonomy report, indicate from how many species you found homologs.
+			I found homologs from 43 species (see ncbi_blastp_taxonomyreport.htm on Github) 
+		
+	5. Download fasta files of the top 6 hits – pick sequences that are of similar length to your sequence from J. curcas, have e-values that suggest significant homology, and are from different species. List the accession numbers from these top 6 hits and their e-values from your blast.
+	See Github, question6_files -> fastafiles_q7.4 for associated fasta files 
+
+			Hypothetical protein POPTR_0002s12410g, partial [Populus trichocarpa]
+			Accession #: XP_002302428.2 	
+			E-value: 6e-158 	
+						
+			PREDICTED: transcription factor MYB44-like [Populus euphratica]
+				Accession #: XP_011017151.1
+				E-value: 2e-153 	
+			
+			Hypothetical protein PRUPE_ppa008979mg [Prunus persica]
+				Accession #: XP_007227715.1
+				E-value: 1e-148 						
+						
+			PREDICTED: transcription factor MYB44-like [Vitis vinifera]
+				Accession#: XP_002285015.1
+				E-value:	6e-150
+			
+			PREDICTED: transcription factor MYB44-like [Prunus mume]
+				Accession #: XP_008220277.1
+				E-value:	7e-147
+			
+			
+			Hypothetical protein CICLE_v10001979mg [Citrus clementina]
+				Accession #: XP_006434697.1
+				E-value: 3e-140
+
+7. (15 pts) Now, find a nucleotide sequence of the same gene from Jatropha curcas-what is its accession number (2pts)?
+**see Github, question7_files folder for the associated files for this question. 
+
+	
+	Accession #: JX569771
+	http://www.ncbi.nlm.nih.gov/nuccore/410519445  
+	
+  1. What type of blast is the most appropriate in this case? (3 pts).
+		Blastn for nucleotide blast  
+		
+  2. When you do the blast to the nr database at NCBI, how many hits do you return (3 pts)?
+		I found 29 hits
+		
+  3. Using the taxonomy report, indicate from how many species you found homologs (3 pts).
+		I found homologs for 15 organisms (see NCBI_blastn_taxonomyreport.htm on Github)
+		
+  4. Download fasta files of the top 6 hits – pick sequences that are of similar length to your sequence from curcas, and have e-values that suggest significant homology. List the accession numbers from these top 6 hits and their e-values from your blast (3 pts).
+See Github, question7_files -> fastafiles_q7.4 for associated fasta files 
+		 
+		 PREDICTED: Populus euphratica transcription factor MYB44-like (LOC105120594), mRNA
+			Accession #: XM_011018849.1
+			E-value: 1e-127
+		 
+		 PREDICTED: Prunus mume transcription factor MYB44-like (LOC103320378), mRNA
+			Accession #: XM_008222055.1
+			E-value:	2e-86 	
+		
+		 PREDICTED: Gossypium raimondii transcription factor MYB44-like (LOC105770114), mRNA
+			Accession #: XM_012591173.1
+			E-value: 5e-67
+			
+		Glycine max cDNA, clone: GMFL01-30-B16
+			Accession #: AK245426.1 
+			E-value: 4e-58
+			
+		 PREDICTED: Cucumis melo transcription factor MYB44-like (LOC103493578), mRNA
+			Accession #: XM_008454384.1
+			E-value: 3e-54	
+			
+		 PREDICTED: Cucumis sativus transcription factor MYB44-like (LOC101218543), mRNA
+			Accession #: XM_004141227.2
+			E-value: 	4e-53	
+
+8. (15 pts) You have decided, as part of your dissertation, to investigate metapopulation dynamics of the Glanville fritillary butterfly and thus you need to measure population structure across a landscape. You would like to first assess what genomic tools are available for this non-model organism. (Each question below is worth 3 points).
+	1. Are there any groups that have developed tools for this species, and if so, what is their website address?
+		http://www.helsinki.fi/science/metapop/research/mcgenome.html
+		
+	2. What tools are they suggesting will be developed?
+		LiSs (Linkage map Superscaffolder) for superscaffolding (unpublished)
+		
+	3. What tools have they developed?
+		Lep-MAP software for constructing accurate linkage maps using high-density SNP data (Rastas et al. 2013)
+		MIP Scaffolder for genome scaffolding (Salmela et al. 2012)
+		Coral and HybridSHREC for read error correction (Salmela and Schröder 2011; Salmela 2010)
+		PANNZER for functional annotation (Radivojac et al. 2013) 
+		and EPT and SANS for orthology prediction (Ta et al. 2011; Koskinen and Holm 2012). 
+		
+	4. Can you find this information on NCBI?
+		Yes, http://www.ncbi.nlm.nih.gov/genome/?term=Glanville+fritillary
+		
+	5. Describe how you would take sequences that may be available for this species and develop a strategy for developing more SNPs that are not micro-array dependent. You will need to delve into outside resources prior to formulating a good answer!
+ I believe you could take a more sequence based approach for this by aligning your sequences with other known mRNA's to look for SNPs.
+ 
+ 
+
+9. (15 points; basic unix) Using the Homo_sapiens.GRCh38.cds.all.fa file (link here), answer the following questions. Supply the unix command you used followed by the answer. (Each question is worth 5 points).
+ 
+	1. How many sequences are in the fasta file?	
+		101933
+		grep -c "^>" Homo_sapiens.GRCh38.cds.all.fa  
+ 
+	2. How many lines are in the fasta file?
+		2066758
+		wc -l Homo_sapiens.GRCh38.cds.all.fa 
+
+	3. Is the adapter sequence ‘AGATCGG’ present within the file?
+		Yes it is.
+		grep -o "AGATCGG" Homo_sapiens.GRCh38.cds.all.fa | head -n 6
+
+
+10. (15 points; advanced unix) Perform the following tasks. Supply the unix command you used and the file showing your changes. Each question is worth 5 points.
+**See Github, question10and11_files folder for associated files**
+
+	1. At the command line, change the name of the fasta headers in the file Homo_sapiens.GRCh38.cds.all.fa from their current name to a linear sequence, with the first entry with the fasta header >1, the second >2, and so on.
+		sed 's/.*ENST.*/>/' Homo_sapiens.GRCh38.cds.all.fa | awk '/>/{print $0(++i)}!/>/' > Homo_sapiens.GRCh38.cds.all.newheaders.fa
+
+	
+	2. Using the file Homo_sapiens.GRCh38.82.abinitio.gtf (link here), make a .bed file that includes the following information, in this order: chromosome of the feature, type of feature (ie exon or transcript) starting bp, and ending bp.
+		awk '!/^#/ { print $1 "\t" $3 "\t" $4-1 "\t" $5 }' Homo_sapiens.GRCh38.82.abinitio.gtf > Homo_sapiens.GRCh38.82.abinitio.bed
+  
+	3. Use grep to make two files from Homo_sapiens.GRCh38.82.abinitio.gtf: one with only transcripts and one with only exons. Submit these as part of question 10; you will be using them again later.
+		grep "transcript" Homo_sapiens.GRCh38.82.abinitio.gtf > Homo_sapiens.GRCh38.82.abinitio.transcript_only.gtf
+		grep "exon" Homo_sapiens.GRCh38.82.abinitio.gtf > Homo_sapiens.GRCh38.82.abinitio.exon_only.gtf
+		
+11. (30 points total; ggplot2 in R and RMarkdown) To complete these tasks, you will need to load the exon or transcript-only files that you made above into R Studio. Alternatively, you can use the Homo_sapiens.GRCh38.82.abinitio.gtf file and subset it as necessary.
+**See Github, question10and11_files folder for associated files**
+  
+	
+12.(20 points) You want to run a long job to the flux to perform an RNA-seq experiment. Clearly the steps that take the longest are those that require you to map the reads back to your reference transcriptome. Write an example .pbs script that would allow you to run these commands, and turn this in. Hint: you can use a pbs script from our blast exercise and replace the blast command with your alignment commands.
+ **See Github, question12_files folder for associated files
+
+ 
+
+ 
