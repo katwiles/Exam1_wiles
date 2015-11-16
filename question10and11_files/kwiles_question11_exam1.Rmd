@@ -1,0 +1,120 @@
+---
+title: "Exam 1, Question 11"
+author: "Kat Wiles"
+date: "November 4, 2015"
+output: pdf_document
+---
+
+###1. Make a table of the average exon and transcript length (±SE) for each chromosome. RMarkdown cheatsheet here: https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf###
+  
+```{r read_in_data, echo=TRUE}
+exon<- read.delim("Homo_sapiens.GRCh38.82.abinitio.exon_only.gtf", header=FALSE) #read in exon dataset, no header
+transcript <- read.delim("Homo_sapiens.GRCh38.82.abinitio.transcript_only.gtf", header=FALSE) #read in transcript dataset, no header
+```  
+  
+```{r create_length_column, echo=TRUE}
+colnames(exon)[4] <- "start.bp" #changing column name to start bp in exon file
+colnames(exon)[5] <- "end.bp" #changing column name to end bp in exon file
+colnames(exon)[1] <- "chr" #changing column name to chromosome 
+colnames(exon)[3] <- "feature"
+
+exon$length <- exon$end.bp - exon$start.bp #creating a new column that calculates the length of exon from the ending bp and start bp
+head(exon) #checking to see if length column is in exon file
+
+#repeating above steps for transcript file
+colnames(transcript)[4] <- "start.bp" #changing column name to start bp in transcript file
+colnames(transcript)[5] <- "end.bp" #changing column name to end bp in transcript file
+colnames(transcript)[1] <- "chr" #changing column name to chromosome 
+colnames(transcript)[3] <- "feature"
+transcript$length <- transcript$end.bp - transcript$start.bp 
+head(transcript) #checking to see if length column is in transcript file
+```
+  
+```{r mean_length, echo=TRUE}  
+e.mean <- aggregate(exon [ ,10], list(exon$chr), mean) #getting mean leangth of each chromosome in exon file
+t.mean <- aggregate(transcript [ ,10], list(transcript$chr), mean) #getting mean length from each chromosome in transcript file
+
+```
+
+```{r standard_error, echo=TRUE}
+std.err <- function(x) {sd(x)/sqrt(length(x))} #standard error equation
+
+exon_std.err <- aggregate(exon[ ,10], list(exon$chr), std.err) #calculationg standard error for exons
+transcript_std.err <- aggregate(transcript[ ,10], list(transcript$chr), std.err) #calculating standard error for transcripts
+
+```
+
+
+```{r merge, tidy=TRUE, tidy.opts=list(width.cutoff=55), echo=TRUE}
+exon_merge <- merge(e.mean, exon_std.err, by.x="Group.1", by.y="Group.1") #merging mean length and standard error in exon file
+transcript_merge <- merge(t.mean, transcript_std.err, by.x = "Group.1", by.y = "Group.1") #merging mean leangth and standard error in transcript file
+exon_transcript_merge <- merge(exon_merge, transcript_merge, by.x="Group.1", by.y="Group.1")
+names(exon_transcript_merge) <- c("chr", "exon_length", "exon_std.err", "transcript_length", "transcript_std.err")
+exon_transcript_merge_chronly <- exon_transcript_merge[-23:-383,] #getting rid of weird non-chromosome rows
+
+#converting above dataframe to table 
+m.length.table <- as.table(as.matrix(exon_transcript_merge_chronly))
+m.length.table
+
+```
+
+
+###2. Make a frequency histogram of exon lengths for the X and Y chromosomes, either separately or together.###
+
+```{r subsetting_xylength, tidy=TRUE, tidy.opts=list(width.cutoff=55)}
+x_exon_length <- subset(exon, exon$chr=='X')
+y_exon_length <- subset(exon, exon$chr=='Y')
+x_y_exon_length <- subset(exon, exon$chr=='X' | exon$chr=='Y') #subsetting to get rid of non-sex chromosomes
+head(x_y_exon_length) #checking to make sure "X" chromosome was taken
+tail(x_y_exon_length) #checking for "Y"
+```
+ 
+ 
+####Frequency Histogram of exon lengths#### 
+```{r histogram, tidy=TRUE, tidy.opts=list(width.cutoff=55), echo=TRUE}
+#install.packages("ggplot2",repos = "http://cran.rstudio.com/") #install ggplot
+library(ggplot2) #load ggplot to session
+hist<-ggplot(x_y_exon_length, aes(x_y_exon_length$length, fill = x_y_exon_length$chr)) + geom_histogram(binwidth=1) + geom_density(alpha = 0.1)
+hist + labs(x="Exon Lengths", y="Frequency Count")
+
+```
+
+
+
+
+
+###3. Is there a relationship between total chromosome length and average exon length across chromosomes? (Hint: plot average exon length per chromosome against each chromosome’s total length, and estimate a correlation coefficient using R).###
+  
+  
+####Calculating chromosome length####
+```{r chr.length, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+chr.length <- read.delim("Homo_sapiens.GRCh38.82.abinitio.bed", header = FALSE)
+names(chr.length) <- c("chr", "feature", "start.bp", "end.bp")
+start_position <- aggregate(chr.length$start.bp, by = list(chr.length$chr), min) #finding smallest value in start for each chromosome
+end_position <- aggregate(chr.length$start.bp, by = list(chr.length$chr), max) 
+start_end <- merge(start_position, end_position, by.x="Group.1", by.y="Group.1")
+names(start_end) <- c("chr", "start", "end")
+start_end$chromosomelength <- (start_end$end - start_end$start) #making new row of chromosome length based on max base pair minus min base pair
+start_end_chromosomes_only <- start_end[-23:-383,] #getting rid of non-chromosome rows
+```
+
+####Combining Exon Mean and Chromosome Lengths to Compare####
+```{r merging_chr.length, tidy=TRUE, tidy.opts=list(width.cutoff=55), echo=TRUE}
+e.mean_merge <- e.mean[-23:-383,]
+names(e.mean_merge) <- c("chr", "mean.e.length")
+e.mean_chr_length <- merge(start_end_chromosomes_only, e.mean_merge, by.x = "chr", by.y = "chr")
+```
+
+####Plotting to compare chromosome and exon length####
+```{r plotting, tidy=TRUE, tidy.opts=list(width.cutoff=55), echo=TRUE}
+plot(e.mean_chr_length$chromosomelength, e.mean_chr_length$mean.e.length, main="Scatterplot of Mean Exon Length vs. Chromosome Length", xlab = "Chromosome Length", ylab = "Exon Length")
+correlation <-cor(e.mean_chr_length$chromosomelength, e.mean_chr_length$mean.e.length)
+```
+
+Because the correlation coefficient is `r correlation`, there does not appear to be a significant relationship.
+  
+  
+  
+ 
+
+
